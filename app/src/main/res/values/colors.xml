@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="nagmo_yellow">#FFD95A</color>
+    <color name="nagmo_cream">#FFF3C4</color>
+    <color name="nagmo_ink">#4A3222</color>
+    <color name="nagmo_ink_soft">#7A6A55</color>
+    <color name="ic_launcher_background">#FFF3C4</color>
+    <color name="widget_bg">#FFFFF6D8</color>
+    <color name="widget_item_bg">#B3FFFFFF</color>
+    <color name="widget_border">#FFF0C850</color>
+</resources>

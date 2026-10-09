@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Nagmo</string>
+    <string name="app_full_name">Nagmo, personalised nagging memo</string>
+    <string name="app_tagline">We nag so you don\'t have to.</string>
+
+    <string name="channel_alarm">Nag alarms</string>
+    <string name="channel_alarm_desc">Rings like an alarm when it\'s time to do your work</string>
+    <string name="channel_alarm_quiet">Nag alarms (no vibration)</string>
+    <string name="channel_alarm_quiet_desc">Alarm sound only, used when vibration is turned off in Nagmo</string>
+    <string name="channel_deadline">Deadline warnings</string>
+    <string name="channel_deadline_desc">Heads-up before something is due</string>
+    <string name="channel_digest">Morning digest</string>
+    <string name="channel_digest_desc">A daily rundown of what needs doing</string>
+    <string name="channel_summary">Lock screen list</string>
+    <string name="channel_summary_desc">A quiet, always-there list of today\'s nags for your lock screen</string>
+
+    <string name="action_done">Done ✓</string>
+    <string name="action_snooze">Snooze %1$d min</string>
+    <string name="action_stop">Stop nagging</string>
+    <string name="action_add">Add nag</string>
+
+    <plurals name="summary_today">
+        <item quantity="one">%d nag today</item>
+        <item quantity="other">%d nags today</item>
+    </plurals>
+    <plurals name="widget_pending">
+        <item quantity="one">%d nag waiting</item>
+        <item quantity="other">%d nags waiting</item>
+    </plurals>
+    <string name="summary_upcoming">Coming up next</string>
+    <string name="summary_tap_to_add">Tap + to add a nag</string>
+
+    <string name="widget_list_label">Nag list</string>
+    <string name="widget_list_desc">Your to-dos at a glance, with a quick add button</string>
+    <string name="widget_quick_label">Quick nag</string>
+    <string name="widget_quick_desc">Nagmo and a big \"Nag me\" button</string>
+    <string name="widget_all_clear">All clear!</string>
+    <string name="widget_nag_me">+ Nag me</string>
+    <string name="widget_nothing_next">Nothing to do. Suspicious.</string>
+    <string name="widget_add">Add a nag</string>
+    <string name="widget_mark_done">Mark done</string>
+
+    <string name="tile_label">Add nag</string>
+    <string name="shortcut_add_short">New nag</string>
+    <string name="shortcut_add_long">Add a new nag</string>
+    <string name="shortcut_today_short">Today</string>
+    <string name="shortcut_today_long">What\'s due today</string>
+</resources>
