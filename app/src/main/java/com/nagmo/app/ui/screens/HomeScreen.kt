@@ -345,7 +345,8 @@ private fun SwipeableNag(
     val state = rememberSwipeToDismissBoxState(
         confirmValueChange = { value ->
             when (value) {
-                SwipeToDismissBoxValue.StartToEnd -> { onSwipeDone(); true }
+                // Spring back: repeating nags stay in the list after being completed.
+                SwipeToDismissBoxValue.StartToEnd -> { onSwipeDone(); false }
                 SwipeToDismissBoxValue.EndToStart -> { onSwipeDelete(); true }
                 SwipeToDismissBoxValue.Settled -> false
             }
