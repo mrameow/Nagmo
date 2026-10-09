@@ -53,13 +53,11 @@ object NagRepository {
     }
 
     private fun update(changedIds: Collection<Int>, transform: (NagStore) -> NagStore): NagStore {
-        val before: NagStore
-        val after: NagStore
-        synchronized(lock) {
-            before = _store.value
-            after = transform(before)
-            save(after)
-            _store.value = after
+        val after = synchronized(lock) {
+            val next = transform(_store.value)
+            save(next)
+            _store.value = next
+            next
         }
         for (id in changedIds) {
             val nag = after.nags.firstOrNull { it.id == id }

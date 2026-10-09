@@ -172,9 +172,7 @@ fun EditNagScreen(nagId: Int?, prefill: String, onClose: () -> Unit) {
                 label = { Text("The work") },
                 placeholder = { Text("e.g. Finish the history essay") },
                 isError = titleError,
-                supportingText = if (titleError) {
-                    { Text("I can't nag you about nothing!") }
-                } else null,
+                supportingText = { if (titleError) Text("I can't nag you about nothing!") },
                 keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences, imeAction = ImeAction.Next),
                 modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.medium,

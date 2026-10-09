@@ -14,9 +14,9 @@ import com.nagmo.app.util.TimeFormat
 
 @Suppress("DEPRECATION")
 class NagListWidgetService : RemoteViewsService() {
-    override fun onGetViewFactory(intent: Intent): RemoteViewsFactory = Factory(applicationContext)
+    override fun onGetViewFactory(intent: Intent): RemoteViewsService.RemoteViewsFactory = Factory(applicationContext)
 
-    private class Factory(private val context: Context) : RemoteViewsFactory {
+    private class Factory(private val context: Context) : RemoteViewsService.RemoteViewsFactory {
         private var items: List<Nag> = emptyList()
 
         override fun onCreate() {

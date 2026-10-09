@@ -18,9 +18,11 @@ class WidgetActionActivity : Activity() {
         Settings.init(this)
         val id = intent.getIntExtra(AlarmScheduler.EXTRA_NAG_ID, -1)
         when (intent.getStringExtra(EXTRA_ACTION)) {
-            ACTION_DONE -> if (id > 0) {
-                NagRepository.complete(id)
-                Toast.makeText(this, NagMessages.doneCheer(Settings.current.personality), Toast.LENGTH_SHORT).show()
+            ACTION_DONE -> {
+                if (id > 0) {
+                    NagRepository.complete(id)
+                    Toast.makeText(this, NagMessages.doneCheer(Settings.current.personality), Toast.LENGTH_SHORT).show()
+                }
             }
             else -> startActivity(
                 Intent(this, MainActivity::class.java)
