@@ -68,11 +68,17 @@ Android Studio, or:
 # APK: app/build/outputs/apk/debug/app-debug.apk
 ```
 
-Every push runs the **Build APK** GitHub Action, which uploads a ready-to-install
-`nagmo-apk` artifact (debug and release APKs).
+### Download
 
-The release APK is signed with the debug key so that it installs as-is. Set up
-your own signing key before publishing to a store.
+Every push to `main` builds the app and publishes the APK on the
+[**Releases**](../../releases/latest) page. Download `Nagmo-1.0.N.apk` and
+open it on your phone. New versions install over old ones and keep your nags.
+
+Release APKs are signed with `keystore/nagmo-release.jks`. That key is committed
+to the repo so updates always install cleanly, which also means it is **not
+secret**. Before publishing to a store, use your own key by setting
+`NAGMO_KEYSTORE`, `NAGMO_KEYSTORE_PASSWORD`, `NAGMO_KEY_ALIAS` and
+`NAGMO_KEY_PASSWORD`.
 
 ### Permissions
 

@@ -13,16 +13,26 @@ android {
         applicationId = "com.nagmo.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
+        // CI passes the build number so every release installs over the previous one.
+        versionCode = (project.findProperty("nagmoVersionCode") as String?)?.toInt() ?: 1
+        versionName = "1.0." + ((project.findProperty("nagmoVersionCode") as String?) ?: "0")
+    }
+
+    signingConfigs {
+        // A fixed key so sideloaded updates install over each other. It is committed to the
+        // repo, so it is NOT secret: use your own key (via the env vars) for a store release.
+        create("release") {
+            storeFile = file(System.getenv("NAGMO_KEYSTORE") ?: "../keystore/nagmo-release.jks")
+            storePassword = System.getenv("NAGMO_KEYSTORE_PASSWORD") ?: "nagmo-sideload"
+            keyAlias = System.getenv("NAGMO_KEY_ALIAS") ?: "nagmo"
+            keyPassword = System.getenv("NAGMO_KEY_PASSWORD") ?: "nagmo-sideload"
+        }
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            // Signed with the debug key so the CI-built release APK installs out of the box.
-            // Replace with your own signing config before publishing to a store.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 

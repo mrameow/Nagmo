@@ -5,6 +5,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,18 +21,35 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
-      - name: Build debug and release APKs
-        run: ./gradlew --no-daemon assembleDebug assembleRelease lintDebug
+      - name: Build APKs
+        run: ./gradlew --no-daemon -PnagmoVersionCode=${{ github.run_number }} assembleDebug assembleRelease lintDebug
+
+      - name: Rename APK
+        run: cp app/build/outputs/apk/release/app-release.apk Nagmo-1.0.${{ github.run_number }}.apk
 
       - uses: actions/upload-artifact@v4
         with:
           name: nagmo-apk
           path: |
+            Nagmo-1.0.${{ github.run_number }}.apk
             app/build/outputs/apk/debug/app-debug.apk
-            app/build/outputs/apk/release/app-release.apk
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: lint-report
           path: app/build/reports/lint-results-debug.html
+
+      - name: Publish GitHub release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="v1.0.${{ github.run_number }}"
+          gh release create "$TAG" "Nagmo-1.0.${{ github.run_number }}.apk" \
+            --target "${{ github.sha }}" \
+            --title "Nagmo 1.0.${{ github.run_number }}" \
+            --latest \
+            --notes "Download **Nagmo-1.0.${{ github.run_number }}.apk** below and open it on your Android phone to install (allow installing from your browser/files app if asked). Updates install over earlier versions and keep your nags.
+
+          Changes: ${{ github.event.head_commit.message }}"
