@@ -28,6 +28,7 @@ import com.nagmo.app.ui.screens.HomeScreen
 import com.nagmo.app.ui.screens.SettingsScreen
 import com.nagmo.app.ui.screens.StatsScreen
 import com.nagmo.app.ui.theme.NagmoTheme
+import com.nagmo.app.ui.theme.SyncSystemBars
 
 sealed interface Route {
     data object Home : Route
@@ -48,6 +49,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             NagmoTheme {
+                SyncSystemBars()
                 val askNotifications = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {
                     NagRepository.refreshSurfaces()
                 }

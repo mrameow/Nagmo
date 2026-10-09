@@ -6,10 +6,10 @@
     android:viewportWidth="24"
     android:viewportHeight="24"
     android:tint="?android:attr/colorControlNormal">
-    <group android:scaleX="0.2" android:scaleY="0.2" android:translateX="0" android:translateY="0.4">
+    <group android:scaleX="0.26" android:scaleY="0.26" android:translateX="-1" android:translateY="-1">
         <path
             android:fillType="evenOdd"
             android:fillColor="#FFFFFFFF"
-            android:pathData="M30,18 H90 Q100,18 100,28 V80 L82,98 H30 Q20,98 20,88 V28 Q20,18 30,18 Z M37,56 a7,9 0 1,0 14,0 a7,9 0 1,0 -14,0 Z M69,56 a7,9 0 1,0 14,0 a7,9 0 1,0 -14,0 Z M52,67 Q60,76 68,67 Q60,70 52,67 Z" />
+            android:pathData="M32,14 H68 Q86,14 86,32 V66 L66,86 H32 Q14,86 14,68 V32 Q14,14 32,14 Z M34.4,50 a3.6,3.6 0 1,0 7.2,0 a3.6,3.6 0 1,0 -7.2,0 Z M58.4,50 a3.6,3.6 0 1,0 7.2,0 a3.6,3.6 0 1,0 -7.2,0 Z M44,58 Q50,66 56,58 Q50,61 44,58 Z" />
     </group>
 </vector>

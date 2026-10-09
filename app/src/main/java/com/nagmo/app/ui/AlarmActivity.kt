@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -41,9 +40,9 @@ import com.nagmo.app.data.Settings
 import com.nagmo.app.ui.components.Mascot
 import com.nagmo.app.ui.components.Mood
 import com.nagmo.app.ui.theme.NagmoTheme
-import com.nagmo.app.ui.theme.OverdueRed
-import com.nagmo.app.ui.theme.onSurface
-import com.nagmo.app.ui.theme.surface
+import com.nagmo.app.ui.theme.SyncSystemBars
+import com.nagmo.app.ui.theme.LocalNagmo
+import androidx.compose.foundation.shape.RoundedCornerShape
 import com.nagmo.app.util.TimeFormat
 import kotlinx.coroutines.delay
 
@@ -71,6 +70,7 @@ class AlarmActivity : ComponentActivity() {
         val title = NagMessages.alarmTitle(Settings.current.personality, count)
         setContent {
             NagmoTheme {
+                SyncSystemBars()
                 AlarmScreen(
                     nag = nag,
                     headline = title,
@@ -131,6 +131,7 @@ private fun AlarmScreen(
     onOpen: () -> Unit,
 ) {
     val context = LocalContext.current
+    val extras = LocalNagmo.current
     var now by remember { mutableLongStateOf(System.currentTimeMillis()) }
     LaunchedEffect(Unit) {
         while (true) {
@@ -138,71 +139,65 @@ private fun AlarmScreen(
             now = System.currentTimeMillis()
         }
     }
-    val bg = nag.color.surface()
-    val fg = nag.color.onSurface()
+    val muted = MaterialTheme.colorScheme.onSurfaceVariant
     Column(
         Modifier
             .fillMaxSize()
-            .background(bg)
+            .background(MaterialTheme.colorScheme.background)
             .safeDrawingPadding()
-            .padding(24.dp),
+            .padding(horizontal = 28.dp, vertical = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Spacer(Modifier.height(24.dp))
-            Text(TimeFormat.time(context, now), style = MaterialTheme.typography.headlineMedium, color = fg)
-            Spacer(Modifier.height(16.dp))
-            Mascot(Mood.NAGGING, 180.dp)
-            Spacer(Modifier.height(16.dp))
-            Text(headline, style = MaterialTheme.typography.titleMedium, color = fg, textAlign = TextAlign.Center)
-            Spacer(Modifier.height(8.dp))
-            Text(
-                nag.title,
-                style = MaterialTheme.typography.headlineMedium,
-                color = fg,
-                textAlign = TextAlign.Center,
-            )
+            Spacer(Modifier.height(32.dp))
+            Text(TimeFormat.time(context, now), style = MaterialTheme.typography.displaySmall, color = muted)
+            Spacer(Modifier.height(40.dp))
+            Mascot(Mood.NAGGING, 112.dp)
+            Spacer(Modifier.height(28.dp))
+            Text(headline.uppercase(), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, textAlign = TextAlign.Center)
+            Spacer(Modifier.height(10.dp))
+            Text(nag.title, style = MaterialTheme.typography.headlineMedium, textAlign = TextAlign.Center)
             nag.dueAt?.let {
                 Text(
-                    (if (it < now) "⚠ Was due " else "🏁 Due ") + TimeFormat.relative(context, it),
-                    color = if (it < now) OverdueRed else fg,
-                    style = MaterialTheme.typography.bodyLarge,
+                    (if (it < now) "Was due " else "Due ") + TimeFormat.relative(context, it),
+                    color = if (it < now) extras.danger else muted,
+                    style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(top = 8.dp),
                 )
             }
             if (nag.details.isNotBlank()) {
                 Text(
                     nag.details,
-                    color = fg.copy(alpha = 0.8f),
+                    color = muted,
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
-                    maxLines = 6,
-                    modifier = Modifier.padding(top = 12.dp),
+                    maxLines = 5,
+                    modifier = Modifier.padding(top = 16.dp),
                 )
             }
             if (nag.subtasks.isNotEmpty()) {
                 val (d, t) = nag.subtaskProgress
-                Text("☑ $d of $t steps done", color = fg, modifier = Modifier.padding(top = 8.dp))
+                Text("$d of $t steps done", color = muted, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 10.dp))
             }
         }
         Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Button(
                 onClick = onDone,
-                modifier = Modifier.fillMaxWidth().height(60.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-            ) { Text("Done! ✓", style = MaterialTheme.typography.titleMedium) }
+                modifier = Modifier.fillMaxWidth().height(56.dp),
+                shape = RoundedCornerShape(18.dp),
+            ) { Text("Done", style = MaterialTheme.typography.titleMedium) }
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                OutlinedButton(onClick = onSnooze, modifier = Modifier.weight(1f).height(52.dp)) {
-                    Text("Snooze $snoozeMinutes min", color = fg)
+                OutlinedButton(onClick = onSnooze, modifier = Modifier.weight(1f).height(52.dp), shape = RoundedCornerShape(18.dp)) {
+                    Text("Snooze $snoozeMinutes min", color = MaterialTheme.colorScheme.onSurface)
                 }
-                OutlinedButton(onClick = onOpen, modifier = Modifier.weight(1f).height(52.dp)) {
-                    Text("Open", color = fg)
+                OutlinedButton(onClick = onOpen, modifier = Modifier.weight(1f).height(52.dp), shape = RoundedCornerShape(18.dp)) {
+                    Text("Open", color = MaterialTheme.colorScheme.onSurface)
                 }
             }
             if (nag.nagEveryMinutes > 0) {
                 TextButton(onClick = onStop, modifier = Modifier.fillMaxWidth()) {
-                    Text("Stop nagging (not done yet)", color = fg)
+                    Text("Stop nagging for now", color = muted)
                 }
             }
         }

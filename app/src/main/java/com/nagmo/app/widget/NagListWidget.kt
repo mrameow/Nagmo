@@ -9,7 +9,6 @@ import android.net.Uri
 import android.view.View
 import android.widget.RemoteViews
 import com.nagmo.app.R
-import com.nagmo.app.alarm.NagMessages
 import com.nagmo.app.alarm.Notifications
 import com.nagmo.app.data.NagRepository
 import com.nagmo.app.data.Settings
@@ -30,15 +29,21 @@ class NagListWidget : AppWidgetProvider() {
             val today = NagRepository.dueToday()
             val views = RemoteViews(context.packageName, R.layout.widget_nag_list)
 
+            val overdue = pending.count { it.isOverdue() }
+            views.setTextViewText(
+                R.id.widget_title,
+                context.getString(if (today.isNotEmpty() || pending.isEmpty()) R.string.widget_title_today else R.string.widget_title_next),
+            )
             views.setTextViewText(
                 R.id.widget_count,
                 when {
-                    today.isNotEmpty() -> context.resources.getQuantityString(R.plurals.summary_today, today.size, today.size)
-                    pending.isNotEmpty() -> context.resources.getQuantityString(R.plurals.widget_pending, pending.size, pending.size)
-                    else -> context.getString(R.string.widget_all_clear)
+                    pending.isEmpty() -> ""
+                    overdue > 0 -> "${pending.size} to do · $overdue overdue"
+                    else -> "${pending.size} to do"
                 },
             )
-            views.setTextViewText(R.id.widget_empty_text, NagMessages.emptyLine(Settings.current.personality))
+            views.setTextViewText(R.id.widget_empty_text, context.getString(R.string.widget_all_clear))
+            views.setInt(R.id.widget_add_bg, "setColorFilter", WidgetColors.accent(context))
 
             @Suppress("DEPRECATION")
             run {

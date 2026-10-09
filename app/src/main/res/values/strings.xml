@@ -15,7 +15,7 @@
     <string name="channel_summary">Lock screen list</string>
     <string name="channel_summary_desc">A quiet, always-there list of today\'s nags for your lock screen</string>
 
-    <string name="action_done">Done ✓</string>
+    <string name="action_done">Done</string>
     <string name="action_snooze">Snooze %1$d min</string>
     <string name="action_stop">Stop nagging</string>
     <string name="action_add">Add nag</string>
@@ -34,10 +34,12 @@
     <string name="widget_list_label">Nag list</string>
     <string name="widget_list_desc">Your to-dos at a glance, with a quick add button</string>
     <string name="widget_quick_label">Quick nag</string>
-    <string name="widget_quick_desc">Nagmo and a big \"Nag me\" button</string>
-    <string name="widget_all_clear">All clear!</string>
-    <string name="widget_nag_me">+ Nag me</string>
-    <string name="widget_nothing_next">Nothing to do. Suspicious.</string>
+    <string name="widget_quick_desc">Your next nag and a quick add button</string>
+    <string name="widget_all_clear">All clear</string>
+    <string name="widget_title_today">Today</string>
+    <string name="widget_title_next">Up next</string>
+    <string name="widget_up_next">Up next</string>
+    <string name="widget_nothing_next">Nothing planned</string>
     <string name="widget_add">Add a nag</string>
     <string name="widget_mark_done">Mark done</string>
 

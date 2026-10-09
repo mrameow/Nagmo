@@ -12,15 +12,16 @@ enum class Priority(val label: String) {
     HIGH("Urgent"),
 }
 
-/** Sticky-note colours. ARGB values are shared by the app UI and the widgets. */
+/** Label colours shown as a small dot. ARGB values are shared by the app and the widgets. */
 @Serializable
 enum class NoteColor(val label: String, val argb: Long, val darkArgb: Long) {
-    YELLOW("Lemon", 0xFFFFE27A, 0xFF5C4A12),
-    PINK("Bubblegum", 0xFFFFC2D1, 0xFF5E2636),
-    MINT("Mint", 0xFFBDEFD8, 0xFF1F4A3A),
-    BLUE("Sky", 0xFFC4DDFF, 0xFF1F3550),
-    PURPLE("Lilac", 0xFFE0CCFF, 0xFF3A2A55),
-    ORANGE("Peach", 0xFFFFD3B0, 0xFF5A3418),
+    NONE("None", 0x00000000, 0x00000000),
+    YELLOW("Amber", 0xFFE0A526, 0xFFF2C14E),
+    PINK("Rose", 0xFFE0607E, 0xFFFF8FB0),
+    MINT("Sage", 0xFF3E9C74, 0xFF7FD1A8),
+    BLUE("Ocean", 0xFF3B78DB, 0xFF8AB4FF),
+    PURPLE("Lavender", 0xFF7A68D8, 0xFFAFA2FF),
+    ORANGE("Coral", 0xFFE0714F, 0xFFFF9B80),
 }
 
 @Serializable
@@ -67,7 +68,7 @@ data class Nag(
     /** When the work needs to be finished. */
     val dueAt: Long? = null,
     val priority: Priority = Priority.MEDIUM,
-    val color: NoteColor = NoteColor.YELLOW,
+    val color: NoteColor = NoteColor.NONE,
     val category: String = "",
     val repeat: Repeat = Repeat.NONE,
     /** Re-nag every N minutes after the alarm until marked done (0 = off). */

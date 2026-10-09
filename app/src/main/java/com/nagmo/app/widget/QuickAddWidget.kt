@@ -32,9 +32,19 @@ class QuickAddWidget : AppWidgetProvider() {
                 },
             )
             views.setTextViewText(R.id.quick_next, next?.let { n ->
-                val whenText = (n.dueAt ?: n.nextAlarmAt)?.let { " · " + TimeFormat.countdown(it) } ?: ""
-                n.title + whenText
+                n.title
             } ?: context.getString(R.string.widget_nothing_next))
+            val whenAt = next?.let { it.dueAt ?: it.nextAlarmAt }
+            views.setTextViewText(
+                R.id.quick_label,
+                when {
+                    next == null -> context.getString(R.string.widget_all_clear)
+                    next.isOverdue() -> "Overdue"
+                    whenAt != null -> "Up next · " + TimeFormat.countdown(whenAt)
+                    else -> context.getString(R.string.widget_up_next)
+                },
+            )
+            views.setInt(R.id.quick_add_bg, "setColorFilter", WidgetColors.accent(context))
             views.setOnClickPendingIntent(R.id.quick_root, Notifications.addNagIntent(context, 20))
             manager.updateAppWidget(widgetId, views)
         }

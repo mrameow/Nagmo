@@ -39,21 +39,25 @@ class NagListWidgetService : RemoteViewsService() {
             val nag = items.getOrNull(position) ?: return views
 
             views.setTextViewText(R.id.item_title, nag.title)
-            views.setInt(R.id.item_color, "setColorFilter", nag.color.argb.toInt())
+            val dot = WidgetColors.label(context, nag.color)
+            views.setViewVisibility(R.id.item_dot, if (dot == null) View.GONE else View.VISIBLE)
+            if (dot != null) views.setInt(R.id.item_dot, "setColorFilter", dot)
 
             val now = System.currentTimeMillis()
             val sub = when {
-                nag.isOverdue(now) -> "⚠ Overdue · " + TimeFormat.countdown(nag.dueAt!!, now)
-                nag.dueAt != null -> "Due " + TimeFormat.relative(context, nag.dueAt)
-                nag.nextAlarmAt != null -> "⏰ " + TimeFormat.relative(context, nag.nextAlarmAt!!)
+                nag.isOverdue(now) -> "Overdue " + TimeFormat.countdown(nag.dueAt!!, now).removeSuffix(" ago")
+                nag.dueAt != null -> "Due " + TimeFormat.full(context, nag.dueAt)
+                nag.nextAlarmAt != null -> TimeFormat.full(context, nag.nextAlarmAt!!)
                 nag.details.isNotBlank() -> nag.details.lineSequence().first()
                 else -> ""
             }
             views.setTextViewText(R.id.item_subtitle, sub)
             views.setViewVisibility(R.id.item_subtitle, if (sub.isEmpty()) View.GONE else View.VISIBLE)
-            views.setTextColor(R.id.item_subtitle, if (nag.isOverdue(now)) 0xFFD93A4C.toInt() else 0xFF7A6A55.toInt())
+            views.setTextColor(
+                R.id.item_subtitle,
+                context.getColor(if (nag.isOverdue(now)) R.color.widget_danger else R.color.widget_text_muted),
+            )
             views.setViewVisibility(R.id.item_priority, if (nag.priority == Priority.HIGH) View.VISIBLE else View.GONE)
-            views.setViewVisibility(R.id.item_pin, if (nag.pinned) View.VISIBLE else View.GONE)
 
             views.setOnClickFillInIntent(R.id.item_root, Intent()
                 .putExtra(WidgetActionActivity.EXTRA_ACTION, WidgetActionActivity.ACTION_OPEN)

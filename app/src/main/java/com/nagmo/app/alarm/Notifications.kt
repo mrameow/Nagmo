@@ -21,6 +21,7 @@ import com.nagmo.app.data.Settings
 import com.nagmo.app.ui.AlarmActivity
 import com.nagmo.app.ui.MainActivity
 import com.nagmo.app.util.TimeFormat
+import com.nagmo.app.widget.WidgetColors
 
 object Notifications {
     private const val CHANNEL_ALARM = "nag_alarm"
@@ -132,7 +133,7 @@ object Notifications {
         }
         val builder = NotificationCompat.Builder(context, if (settings.vibrate) CHANNEL_ALARM else CHANNEL_ALARM_NO_VIBRATE)
             .setSmallIcon(R.drawable.ic_stat_nagmo)
-            .setColor(nag.color.argb.toInt())
+            .setColor(WidgetColors.accent(context))
             .setContentTitle(title)
             .setContentText(nag.title)
             .setStyle(NotificationCompat.BigTextStyle().bigText(body))
@@ -162,7 +163,7 @@ object Notifications {
         val due = nag.dueAt ?: return
         val notification = NotificationCompat.Builder(context, CHANNEL_DEADLINE)
             .setSmallIcon(R.drawable.ic_stat_nagmo)
-            .setColor(nag.color.argb.toInt())
+            .setColor(WidgetColors.accent(context))
             .setContentTitle(NagMessages.deadlineTitle(Settings.current.personality, TimeFormat.relative(context, due)))
             .setContentText(nag.title)
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
@@ -195,9 +196,9 @@ object Notifications {
 
     private fun lineFor(context: Context, nag: Nag): String {
         val time = when {
-            nag.isOverdue() -> "⚠ overdue"
+            nag.isOverdue() -> "overdue"
             nag.dueAt != null -> "due " + TimeFormat.time(context, nag.dueAt)
-            nag.nextAlarmAt != null -> "⏰ " + TimeFormat.time(context, nag.nextAlarmAt!!)
+            nag.nextAlarmAt != null -> TimeFormat.time(context, nag.nextAlarmAt!!)
             else -> ""
         }
         return if (time.isEmpty()) nag.title else "${nag.title}  ·  $time"
